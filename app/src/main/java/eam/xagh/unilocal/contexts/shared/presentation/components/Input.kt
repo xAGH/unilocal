@@ -82,6 +82,8 @@ fun Input(
     var isInputFocused by remember { mutableStateOf(hasFocus) }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         OutlinedTextField(
             value = value,
@@ -111,6 +113,7 @@ fun Input(
             modifier = modifier
 //                .align(CenterHorizontally)
                 .height(MaterialTheme.typography.bodyMedium.fontSize.value.dp * 4)
+                .fillMaxWidth()
                 .focusRequester(focusRequester)
                 .onFocusChanged {
                     isInputFocused = it.isFocused
