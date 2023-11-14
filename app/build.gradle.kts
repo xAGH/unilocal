@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -59,45 +60,63 @@ android {
 
 // Versions
 object V {
-    const val compose_boom = "2023.03.00"
-    const  val activity_ktx = "1.7.2"
-    const val fragment_ktx = "1.6.1"
-    const val datastore_preferences = "1.0.0"
+    const val composeBom = "2023.03.00"
+    const val activityKtx = "1.7.2"
+    const val fragmentKtx = "1.6.2"
+    const val datastorePreferences = "1.0.0"
     const val core_ktx = "1.10.1"
     const val lifecycle_runtime_ktx = "2.6.2"
-    const val activity_compose = "1.7.2"
-    const val hilt = "2.44"
+    const val activityCompose = "1.7.2"
+    const val hilt = "2.48"
     const val navigation = "2.5.3"
     const val maps = "2.2.1"
-    const val playServicesMaps = "18.1.0"
+    const val playServicesMaps = "18.2.0"
+    const val gson = "2.8.9"
+    const val coil = "2.4.0"
+    const val googleAccompanistPermissions = "0.33.0"
+    const val playServicesLocation = "21.0.1"
+    const val hiltNavigation = "1.0.0"
+    const val firebaseBom = "32.5.0"
+    const val androidBiometric = "1.1.0"
+    const val appcompat = "1.4.1"
 }
 
 dependencies {
-    // Android
-    implementation("androidx.activity:activity-ktx:${V.activity_ktx}")
-    implementation("androidx.fragment:fragment-ktx:${V.fragment_ktx}")
-    implementation("androidx.datastore:datastore-preferences:${V.datastore_preferences}")
+    //noinspection GradleDependency
+    implementation("androidx.activity:activity-ktx:${V.activityKtx}")
+    implementation(platform("com.google.firebase:firebase-bom:${V.firebaseBom}"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("androidx.fragment:fragment-ktx:${V.fragmentKtx}")
+    implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")
+    implementation("androidx.appcompat:appcompat:${V.appcompat}")
+    implementation("androidx.datastore:datastore-preferences:${V.datastorePreferences}")
     //noinspection GradleDependency
     implementation("androidx.core:core-ktx:${V.core_ktx}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${V.lifecycle_runtime_ktx}")
-    implementation("androidx.activity:activity-compose:${V.activity_compose}")
-
-    // Compose UI
+    //noinspection GradleDependency
+    implementation("androidx.activity:activity-compose:${V.activityCompose}")
+    implementation("com.google.code.gson:gson:${V.gson}")
+    //noinspection GradleDependency
+    implementation("io.coil-kt:coil-compose:${V.coil}")
+    //implementation("com.google.accompanist:accompanist-permissions:${V.googleAccompanistPermissions}")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation(platform("androidx.compose:compose-bom:${V.compose_boom}"))
+    implementation(platform("androidx.compose:compose-bom:${V.composeBom}"))
     implementation("androidx.compose.material:material-icons-extended")
+    //noinspection GradleDependency
     implementation("androidx.navigation:navigation-compose:${V.navigation}")
     implementation("com.google.maps.android:maps-compose:${V.maps}")
     implementation("com.google.android.gms:play-services-maps:${V.playServicesMaps}")
-
-    // Dagger Hilt for dependency injection
     implementation("com.google.dagger:hilt-android:${V.hilt}")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    //noinspection GradleDependency
+    implementation("androidx.hilt:hilt-navigation-compose:${V.hiltNavigation}")
+    implementation(platform("androidx.compose:compose-bom:${V.composeBom}"))
+    implementation("com.google.android.gms:play-services-location:${V.playServicesLocation}")
+    androidTestImplementation(platform("androidx.compose:compose-bom:${V.composeBom}"))
     kapt("com.google.dagger:hilt-compiler:${V.hilt}")
 
     // Test
