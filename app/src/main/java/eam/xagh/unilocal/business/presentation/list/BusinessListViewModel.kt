@@ -23,7 +23,8 @@ class BusinessListViewModel @Inject constructor(
 
     suspend fun getBusiness(): Map<String, List<Business>> {
         val businessByCategory = mutableMapOf<String, MutableList<Business>>()
-        val business = getBusiness(businessRepository)
+        val owner = authenticationViewModel.state.user!!
+        val business = getBusiness(owner.id, businessRepository)
         business.forEach {
             val category = it.category
             if (businessByCategory.containsKey(category)) {

@@ -9,13 +9,28 @@ import eam.xagh.unilocal.business.domain.entities.Business
 import eam.xagh.unilocal.business.domain.repositories.BusinessRepository
 import eam.xagh.unilocal.business.domain.values.BusinessValue
 import eam.xagh.unilocal.business.infrastructure.mappers.businessToMap
+import eam.xagh.unilocal.business.infrastructure.mappers.documentSnapshotToBusiness
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 class BusinessRepositoryAdapter : BusinessRepository {
     val categories = GetBusinessCategoriesUseCase()
-    override suspend fun getBusiness(): List<Business> {
-        return listOf(
+    override suspend fun getBusiness(owner: UUID): List<Business> {
+        val db = FirebaseFirestore.getInstance()
+        val collection = db.collection("business")
+        val business = mutableListOf<Business>()
+        try {
+            val documents =
+                collection.whereEqualTo("owner", owner.toString()).get().await().documents
+            documents.forEach { document ->
+                business.add(documentSnapshotToBusiness(document))
+            }
+        } catch (e: Exception) {
+            Log.i("ErrorBusiness", e.toString())
+            return listOf()
+        }
+        return business
+        /*return listOf(
             BusinessValue(
                 name = "Negocio 1",
                 description = "Negocio de comida",
@@ -65,7 +80,7 @@ class BusinessRepositoryAdapter : BusinessRepository {
                 ratings = 3.1f,
                 images = listOf(Uri.parse("https://img.freepik.com/free-photo/skyscraper-view-city-leader-window-frame_1134-1034.jpg"))
             ),
-        )
+        )*/
     }
 
     private suspend fun uploadImages(images: List<Uri>): List<Uri> {
